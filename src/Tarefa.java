@@ -13,15 +13,19 @@ public class Tarefa{
     public int getId(){
         return id;
     }
+
     public String getDescricao(){
         return descricao;
     }
+
     public void setDescricao(String descricao){
         this.descricao = descricao;
     }
+
     public boolean getTarefaConcluida(){
         return concluida;
     }
+    
     public void setTarefaConcluida(boolean concluida){
         this.concluida = concluida;
     }
