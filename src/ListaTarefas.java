@@ -20,4 +20,18 @@ public class ListaTarefas {
         tarefas.remove(tarefa);
     }
 
+    public void priorizarTarefa(Tarefa tarefa){
+        int posAnterior = tarefas.indexOf(tarefa);
+        tarefas.add(0, tarefa);
+        tarefas.remove(posAnterior);
+    }
+
+    public int getProximoId(){
+        int ultimoId = 0;
+        for (Tarefa tarefa : tarefas) {
+            if(tarefa.getId() > ultimoId)
+                ultimoId = tarefa.getId();
+        }
+        return ultimoId++;
+    }
 }
