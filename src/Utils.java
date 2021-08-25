@@ -53,23 +53,27 @@ public class Utils {
     private void adicionaNovaTarefa(ListaTarefas lista){
 
 
-      System.out.println("|------------------- Nova Tarefa -------------------|");
-      System.out.println("Preencha a descrição da tarefas: ");
-      String descricaoTarefa = scanner.nextLine();
-
-      Tarefa tarefa = new Tarefa(lista.getProximoId(),descricaoTarefa, false);
-      lista.addTarefa(tarefa);
+      System.out.println("|----------------------- Nova Tarefa -----------------------|");
+      System.out.println("Preencha a descrição das tarefas, digite enter para\nadicionar uma nova tarefa e 0 para sair!");
+      String descricaoTarefa;
+      do{
+        descricaoTarefa = scanner.nextLine();
+        if(!descricaoTarefa.equals("0")){
+          Tarefa tarefa = new Tarefa(lista.getProximoId(),descricaoTarefa, false);
+          lista.addTarefa(tarefa);
+        }
+      }while(!descricaoTarefa.equals("0"));
     }
-
-
 
     private void listarTarefas(){
       System.out.println("|------------------- Tarefas Cadastradas -------------------|");
-      System.out.println("|   Tarefa realizada   |   Descrição   |");
+      System.out.println("| Num Tarefa - Descrição - Concluída                        |");
       ArrayList<Tarefa> tarefasTemporaria = new ArrayList<Tarefa>();
+      int cont = 1;
       tarefasTemporaria = listaTarefas.getList();
       for (Tarefa tarefa : tarefasTemporaria) {
-        System.out.println("        ☐         " + tarefa.getDescricao());
+        System.out.println("  " + cont +" - "+ tarefa.getDescricao() + (tarefa.getTarefaConcluida() ? "  ✓  " : "  ☐  "));
+        cont++;
       }
 
     }
