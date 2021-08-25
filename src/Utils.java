@@ -6,6 +6,10 @@ public class Utils {
     Scanner scannerAdd = new Scanner(System.in);
     Scanner scannerPriorizar = new Scanner(System.in);
     Scanner scannerMenu = new Scanner(System.in);
+    Scanner scannerEditarInt = new Scanner(System.in);
+    Scanner scannerEditarString = new Scanner(System.in);
+    Scanner scannerConcluir = new Scanner(System.in);
+
     private static ListaTarefas listaTarefas = new ListaTarefas();
     
     public void criarMenu(){
@@ -15,7 +19,8 @@ public class Utils {
         System.out.println("|                  3 - Excluir Tarefa                       |");
         System.out.println("|                  4 - Editar Tarefa                        |");
         System.out.println("|                  5 - Priorizar Tarefa                     |");
-        System.out.println("|                  6 - Sair                                 |");
+        System.out.println("|                  6 - Concluir Tarefa                      |");
+        System.out.println("|                  7 - Sair                                 |");
         System.out.println("|-----------------------------------------------------------|");
 
         String opcao = scannerMenu.nextLine();
@@ -42,11 +47,16 @@ public class Utils {
             break;
 
           case "5":
-          priorizarTarefa();
-          criarMenu();
+            priorizarTarefa();
+            criarMenu();
           break;
 
           case "6":
+            concluirTarefa();
+            criarMenu();
+          break;
+
+          case "7":
             System.exit(0);
             break;
             
@@ -89,19 +99,26 @@ public class Utils {
 
 
     private void editarTarefas(){
-      System.out.println("|--------------------- Editar Tarefas ----------------------|");
+      System.out.println("|--------------------- Editar Tarefa -----------------------|");
       System.out.println("Selecione uma tarefa cadastrada para editar: ");
-      listarTarefas();
-      int numeroTarefa = scanner.nextInt();
-      System.out.println("Digite a nova descrição:");
-      String novaDescricao = scanner.nextLine();
-      listaTarefas.getList().get(numeroTarefa - 1).setDescricao(novaDescricao);;
-
+      if(listaTarefas.getList().size()>0){
+        listarTarefas();
+        int numeroTarefa = scannerEditarInt.nextInt();
+        System.out.println("Digite a nova descrição:");
+        String novaDescricao = scannerEditarString.nextLine();
+        listaTarefas.getList().get(numeroTarefa - 1).setDescricao(novaDescricao);
+      }
+      else{
+        System.out.println("Não existe nenhuma tarefa cadastrada na lista!");
+      }
+    }
 
     private void excluirTarefa(){
       
-      System.out.println("|------------------- Selecione uma tarefa cadastrada para excluir -------------------|");
-    
+      System.out.println("|-------------------- Excluir Tarefa -----------------------|");
+      
+      System.out.println("Selecione uma tarefa cadastrada para excluir: ");
+
       if(listaTarefas.getList().size()>0){
         listarTarefas();
         System.out.println("Qual o número da tarefa a ser excluida? ");
@@ -124,6 +141,22 @@ public class Utils {
       }else{
         System.out.println("Não existe nenhuma tarefa cadastrada na lista!");
       }
+    }
 
+    private void concluirTarefa(){
+        System.out.println("|-------------------- Concluir Tarefa ----------------------|");
+        System.out.println("Selecione uma tarefa cadastrada para concluir: ");
+        if(listaTarefas.getList().size()>0){
+          listarTarefas();
+          int numeroTarefa = scannerConcluir.nextInt();
+          if(listaTarefas.getList().get(numeroTarefa - 1).getTarefaConcluida() == true){
+            System.out.println("Tarefa já concluída...");
+          }
+          else{
+            listaTarefas.getList().get(numeroTarefa - 1).setTarefaConcluida(true);
+          }
+        }else{
+          System.out.println("Não existe nenhuma tarefa cadastrada na lista!");
+        }
     }
 }
