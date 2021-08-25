@@ -33,7 +33,8 @@ public class Utils {
             break;
 
           case "4":
-            System.out.println("Damasco");
+            editarTarefas();
+            criarMenu();
             break;
 
           case "5":
@@ -75,6 +76,15 @@ public class Utils {
         System.out.println("  " + cont +" - "+ tarefa.getDescricao() + (tarefa.getTarefaConcluida() ? "  ✓  " : "  ☐  "));
         cont++;
       }
+    }
 
+    private void editarTarefas(){
+      System.out.println("|--------------------- Editar Tarefas ----------------------|");
+      System.out.println("Selecione uma tarefa cadastrada para editar: ");
+      listarTarefas();
+      int numeroTarefa = scanner.nextInt();
+      System.out.println("Digite a nova descrição:");
+      String novaDescricao = scanner.nextLine();
+      listaTarefas.getList().get(numeroTarefa - 1).setDescricao(novaDescricao);;
     }
 }
