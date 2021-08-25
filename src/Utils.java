@@ -3,6 +3,9 @@ import java.util.Scanner;
 
 public class Utils {
     Scanner scanner = new Scanner(System.in);
+    Scanner scannerAdd = new Scanner(System.in);
+    Scanner scannerPriorizar = new Scanner(System.in);
+    Scanner scannerMenu = new Scanner(System.in);
     private static ListaTarefas listaTarefas = new ListaTarefas();
     
     public void criarMenu(){
@@ -15,7 +18,7 @@ public class Utils {
         System.out.println("|                  6 - Sair                                 |");
         System.out.println("|-----------------------------------------------------------|");
 
-        String opcao = scanner.nextLine();
+        String opcao = scannerMenu.nextLine();
 
         switch (opcao) {
           case "1":   
@@ -38,8 +41,9 @@ public class Utils {
             break;
 
           case "5":
-            System.out.println("Damasco");
-            break;
+          priorizarTarefa();
+          criarMenu();
+          break;
 
           case "6":
             System.exit(0);
@@ -57,9 +61,10 @@ public class Utils {
       System.out.println("Preencha a descrição das tarefas, digite enter para\nadicionar uma nova tarefa e 0 para sair!");
       String descricaoTarefa;
       do{
-        descricaoTarefa = scanner.nextLine();
+        descricaoTarefa = scannerAdd.nextLine();
         if(!descricaoTarefa.equals("0")){
-          Tarefa tarefa = new Tarefa(listaTarefas.getProximoId(),descricaoTarefa, false);
+          Tarefa tarefa = new Tarefa(descricaoTarefa, false);
+          //listaTarefas.getProximoId()
           listaTarefas.addTarefa(tarefa);
         }
       }while(!descricaoTarefa.equals("0"));
@@ -67,23 +72,45 @@ public class Utils {
 
     private void listarTarefas(){
       System.out.println("|------------------- Tarefas Cadastradas -------------------|");
-      System.out.println("| Num Tarefa - Descrição - Concluída                        |");
-      ArrayList<Tarefa> tarefasTemporaria = new ArrayList<Tarefa>();
-      int cont = 1;
-      tarefasTemporaria = listaTarefas.getList();
 
-      for (Tarefa tarefa : tarefasTemporaria) {
-        System.out.println("  " + cont +" - "+ tarefa.getDescricao() + (tarefa.getTarefaConcluida() ? "  ✓  " : "  ☐  "));
-        cont++;
+      int cont = 1;
+      if(listaTarefas.getList().size()>0){
+        System.out.println("| Num Tarefa - Descrição - Concluída                        |");
+        for (Tarefa tarefa : listaTarefas.getList()) {
+          System.out.println("  " + cont +" - "+ tarefa.getDescricao() + (tarefa.getTarefaConcluida() ? "  ✓  " : "  ☐  "));
+          cont++;
+        }
+      }
+      else{
+        System.out.println("Não existe nenhuma tarefa cadastrada na lista!");
       }
     }
 
     private void excluirTarefa(){
+      
       System.out.println("|------------------- Selecione uma tarefa cadastrada para excluir -------------------|");
-      listarTarefas();
-      System.out.println("|------------------- Qual o número da tarefa a ser excluida?  -------------------|");
-      int posTarefa = scanner.nextInt();
+    
+      if(listaTarefas.getList().size()>0){
+        listarTarefas();
+        System.out.println("Qual o número da tarefa a ser excluida? ");
+        int posTarefa = scanner.nextInt();
+        listaTarefas.excludeTarefa(listaTarefas.getList().get(posTarefa -1 ));
+        listarTarefas();
+      }
+      else{
+        System.out.println("Não existe nenhuma tarefa cadastrada na lista!");
+      }   
+    }
 
-      listaTarefas.excludeTarefa(listaTarefas.getList().get(posTarefa+1));
+    private void priorizarTarefa(){
+      if(listaTarefas.getList().size()>0){
+        System.out.println("Selecione uma tarefa para levar ao topo da lista:");
+        listarTarefas();
+        int posTarefa = scannerPriorizar.nextInt();
+        listaTarefas.priorizarTarefa(listaTarefas.getList().get(posTarefa-1));
+        listarTarefas();
+      }else{
+        System.out.println("Não existe nenhuma tarefa cadastrada na lista!");
+      }
     }
 }
