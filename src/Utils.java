@@ -19,7 +19,7 @@ public class Utils {
 
         switch (opcao) {
           case "1":   
-            adicionaNovaTarefa(listaTarefas);
+            adicionaNovaTarefa();
             criarMenu();
             break;
 
@@ -29,7 +29,8 @@ public class Utils {
             break;
 
           case "3":
-            System.out.println("Caju");
+            excluirTarefa();
+            criarMenu();
             break;
 
           case "4":
@@ -50,27 +51,36 @@ public class Utils {
         
         }
     }
-    private void adicionaNovaTarefa(ListaTarefas lista){
+    private void adicionaNovaTarefa(){
 
 
       System.out.println("|------------------- Nova Tarefa -------------------|");
       System.out.println("Preencha a descrição da tarefas: ");
       String descricaoTarefa = scanner.nextLine();
-
-      Tarefa tarefa = new Tarefa(lista.getProximoId(),descricaoTarefa, false);
-      lista.addTarefa(tarefa);
+      Tarefa tarefa = new Tarefa(listaTarefas.getProximoId(),descricaoTarefa, false);
+      listaTarefas.addTarefa(tarefa);
     }
-
-
 
     private void listarTarefas(){
       System.out.println("|------------------- Tarefas Cadastradas -------------------|");
-      System.out.println("|   Tarefa realizada   |   Descrição   |");
+      System.out.println("|   Tarefa realizada   |      Descrição          |");
+
       ArrayList<Tarefa> tarefasTemporaria = new ArrayList<Tarefa>();
       tarefasTemporaria = listaTarefas.getList();
-      for (Tarefa tarefa : tarefasTemporaria) {
-        System.out.println("        ☐         " + tarefa.getDescricao());
-      }
 
+      for (Tarefa tarefa : tarefasTemporaria) {
+        System.out.println(tarefa.getTarefaConcluida() ? "            ☐         " :
+                          "        ✓         "+
+                           tarefa.getDescricao());
+      }
+    }
+
+    private void excluirTarefa(){
+      System.out.println("|------------------- Selecione uma tarefa cadastrada para excluir -------------------|");
+      listarTarefas();
+      System.out.println("|------------------- Qual o número da tarefa a ser excluida?  -------------------|");
+      int posTarefa = scanner.nextInt();
+
+      listaTarefas.excludeTarefa(listaTarefas.getList().get(posTarefa+1));
     }
 }
